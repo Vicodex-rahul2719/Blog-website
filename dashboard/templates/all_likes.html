@@ -1,0 +1,211 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3 header-bar px-3 py-2">
+    <a href="{% url 'likes' %}" class="btn btn-light fw-bold rounded">← Back</a>
+    <h2 class="text-center mb-0 text-white">LIKES</h2>
+    <div class="text-white text-center px-2">
+  {% if request.user.is_staff or request.user.is_superuser %}
+    <p class="mb-0 fw-bold">Total Likes: {{ total_likes_count }}</p>
+    <p class="mb-0 fw-bold">Total Dislikes: {{ total_dislikes_count }}</p>
+  {% else %}
+    <p class="mb-0 fw-bold">Total Likes: {{ my_total_likes_count }}</p>
+    <p class="mb-0 fw-bold">Total Dislikes: {{ my_total_dislikes_count }}</p>
+  {% endif %}
+</div>
+
+  </div>
+
+  <div class="col-md-12">
+    <div class="form-card">
+      <div class="card-body">
+
+        {% if request.user.is_staff or request.user.is_superuser %}
+          <!-- Admin sees Admin and User reactions -->
+
+          <h5 class="mb-3 text-primary mt-3">👑 Admin Reactions</h5>
+
+          <!-- Admin Likes -->
+          <h6 class="text-success">👍 Likes</h6>
+          {% if admin_likes %}
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-success">
+                  <tr>
+                    <th>#</th>
+                    <th>Blog</th>
+                    <th>User</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in admin_likes %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ i.blog.title }}</td>
+                      <td>{{ i.user.get_full_name|default:i.user.username }} <span class="badge bg-primary ms-2">Admin</span></td>
+                      <td>{{ i.created_at|timesince }} ago</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted">No admin likes yet.</p>
+          {% endif %}
+
+          <!-- Admin Dislikes -->
+          <h6 class="text-danger">👎 Dislikes</h6>
+          {% if admin_dislikes %}
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-danger">
+                  <tr>
+                    <th>#</th>
+                    <th>Blog</th>
+                    <th>User</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in admin_dislikes %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ i.blog.title }}</td>
+                      <td>{{ i.user.get_full_name|default:i.user.username }} <span class="badge bg-primary ms-2">Admin</span></td>
+                      <td>{{ i.created_at|timesince }} ago</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted">No admin dislikes yet.</p>
+          {% endif %}
+
+          <hr>
+
+          <h5 class="mb-3 text-primary">👥 User Reactions </h5>
+
+          <!-- User Likes -->
+          <h6 class="text-success">👍 Likes</h6>
+          {% if user_likes %}
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                  <tr>
+                    <th>#</th>
+                    <th>Blog</th>
+                    <th>User</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in user_likes %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ i.blog.title }}</td>
+                      <td>{{ i.user.get_full_name|default:i.user.username }} <span class="badge bg-secondary ms-2">User</span></td>
+                      <td>{{ i.created_at|timesince }} ago</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted">No user likes yet.</p>
+          {% endif %}
+
+          <!-- User Dislikes -->
+          <h6 class="text-danger">👎 Dislikes</h6>
+          {% if user_dislikes %}
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-warning">
+                  <tr>
+                    <th>#</th>
+                    <th>Blog</th>
+                    <th>User</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in user_dislikes %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ i.blog.title }}</td>
+                      <td>{{ i.user.get_full_name|default:i.user.username }} <span class="badge bg-secondary ms-2">User</span></td>
+                      <td>{{ i.created_at|timesince }} ago</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted">No user dislikes yet.</p>
+          {% endif %}
+
+        {% else %}
+          <!-- Normal user sees only their own reactions -->
+          {% if my_likes %}
+            <div class="table-responsive mb-2 mt-2">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark text-white">
+                  <tr>
+                    <th>#</th>
+                    <th>Blog</th>
+                    <th>Reaction</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in my_likes %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ i.blog.title }}</td>
+                      <td>
+                        {% if i.is_like %}
+                          <span class="badge bg-success"><i class="fas fa-thumbs-up"></i> Like</span>
+                        {% else %}
+                          <span class="badge bg-danger"><i class="fas fa-thumbs-down"></i> Dislike</span>
+                        {% endif %}
+                      </td>
+                      <td>{{ i.created_at|timesince }} ago</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="alert alert-info">You haven't liked or disliked any blogs yet.</div>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body { background-color: #f4f6f9; }
+  .header-bar {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    border-radius: 15px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .form-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: 0.3s;
+  }
+  .form-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+{% block content %}
+  <style>
+    body{
+         background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+      }
+    .category-card {
+      transition: transform 0.3s;
+      cursor: pointer;
+      backdrop-filter: blur(50px); 
+    }
+    .category-card:hover {
+      transform: scale(1.02);
+      background-color:white;
+    }
+    .category-card h5:hover{
+       text-decoration: underline;
+    }
+    .category-icon {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+    }
+    .btn-bg-gradient-green { background: linear-gradient(135deg, #11998e, #38ef7d); }
+    .bg-gradient-green {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+      }
+
+  </style>
+
+
+<div class="container ">
+  <div class="container heading-middle mt-2 rounded text-center" style="background-color: rgba(24, 9, 54, 1);">
+      <h2 class="text-warning"><b>EDITABLE CATEGORIES</b></h2>
+    </div>
+      <a href="{% url 'add_catagories'%}" class="btn btn-bg-gradient-green mb-2">← Back</a>
+      <div class="stat-card border-2 shadow bg-gradient-green text-center px-3 rounded text-white"style="border: 2px solid black; min-width: 160px;">
+                    <h6 class="m-0">Total Category</h6>
+                    <p class="fs-5 fw-bold m-0">{{ categories_count }}</p>
+                  </div>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>CATEGORY NAME</th>
+      <th>BLOGS</th>
+      <th>ACTIONS</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in categories %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td><a href="{% url 'specific_category' i.id %}" style="text-decoration: none">{{ i.category_name }}</a></td>
+      <td>{{ i.blog_count }}</td>  <!-- ✅ per-category blog count -->
+      <td>
+        &nbsp;&nbsp;<a href="{% url 'edit_catagories' i.id %}"><i class="fa fa-edit text-success"></i></a> &nbsp;&nbsp;&nbsp;
+        <a href="{% url 'delete_catagories' i.id %}"><i class="fa fa-trash text-danger"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  </div>
+</div>
+
+{% endblock %}

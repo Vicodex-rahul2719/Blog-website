@@ -1,0 +1,295 @@
+
+{% extends 'base/base.html' %}
+{% block title %}Dshborad{% endblock %}
+{% block content%}
+  <style>
+    body {
+      /* background: linear-gradient(90deg, #e2e2e2, #c9d6ff); */
+      
+      color: #333;
+    }
+
+    /* Sidebar Glass Effect */
+    .sidebar {
+      min-height: 100vh;
+      /* background: var(--sidebar-gradient); */
+      /* background: rgba(255, 255, 255, 0.2);; */
+      backdrop-filter: blur(12px);
+      padding: 25px 18px;
+      border-radius: 18px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      background: rgba(25, 25, 35, 0.95);
+    }
+     
+    /* Menu Styling */
+    .menu-card {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      /* background: rgba(255,255,255,0.05); */
+      /* background: linear-gradient(135deg, #7494ec, #556de6); */
+
+      transition: all 0.4s ease; /* slower animation */
+    }
+    .menu-card i { margin-right: 10px; }
+    .menu-card:hover {
+      background: linear-gradient(135deg, #4e73df, #1cc88a);
+      transform: translateX(5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .bg-gradient-blue { background: linear-gradient(135deg, #4e54c8, #8f94fb); }
+    .bg-gradient-green { background: linear-gradient(135deg, #11998e, #38ef7d); }
+    .bg-gradient-orange { background: linear-gradient(135deg, #ff9966, #ff5e62); }
+    .menu-card i {
+      margin-right: 7px;
+      font-size: 1.2rem;
+    }
+  
+
+    .manus-gradient {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+}
+
+    /* Stats Cards */
+    .stat-card {
+      /* background: linear-gradient(135deg, #7494ec, #556de6); */
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Form Card */
+    .form-card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .btn-gradient {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+   
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .profile-container {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+    max-width: 1000px;
+    width: 100%;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .profile-pic {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    transition: transform 0.4s ease;
+  }
+  .profile-pic:hover {
+    transform: scale(1.05) rotate(2deg);
+  }
+
+  .profile-name {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .nav-tabs .nav-link {
+    color: white;
+    border: none;
+    background: transparent;
+    transition: 0.3s ease;
+  }
+  .nav-tabs .nav-link.active {
+    background: linear-gradient(45deg, #ff00cc, #3333ff);
+    border-radius: 10px;
+  }
+
+  .btn-gradient {
+    background: linear-gradient(45deg, #ff00cc, #3333ff);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+  }
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255,255,255,0.4);
+  }
+
+    /* Mobile adjustments */
+    @media (max-width: 992px) {
+      .sidebar {
+        min-height: auto;
+        margin-bottom: 5px;
+      }
+    }
+
+  </style>
+
+      {% for message in messages %}
+  <div class=" alertdiv alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Alert !</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+
+  <script>
+    document.querySelector("#close").addEventListener("click", function () {
+      document.querySelector(".alertdiv").style.display = "none";
+
+    });
+  </script>
+
+<div class="container-fluid py-4 mt-0">
+  <div class="row g-3">
+    <!-- Sidebar Menu -->
+    {% include 'leftsidebar.html' %}
+
+    <div class="profile-container bg-dark p-4">
+  <div class="row g-4 align-items-center">
+    <!-- Profile Picture & Basic Info -->
+    <!-- Profile Picture & Basic Info -->
+<div class="col-md-4 text-center">
+
+
+{% if profile.profile_image %}
+  <!-- Trigger modal on click -->
+  <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="profile-pic mb-3" data-bs-toggle="modal" data-bs-target="#profileImageModal">
+
+{% else %}
+  <img src="/static/img/logo.png" alt="profile" class="profile-pic mb-3" data-bs-toggle="modal" data-bs-target="#profileImageModal">
+{% endif %}
+
+
+  <h4 class="profile-name">{{ profile.user.get_full_name }}</h4>
+  <p><span class="text-warning">BACKGROUND:</span> {{ profile.designation }}</p>
+  <p><span class="text-warning">FROM:</span> <i class="fas fa-map-marker-alt"></i> {{ profile.location }}</p>
+  <p><span class="text-warning">LINK:</span><a href="{{ profile.website }}" target="_blank"> {{ profile.website }}</a></p>
+  <div>
+    <form method="POST" action="{% url 'update_photo' profile.id %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="profile_image" accept="image/*" required class="form-control mb-2">
+      <button type="submit" class="btn btn-gradient"><i class="fas fa-edit"></i> Update Photo</button>
+    </form>
+  </div>
+</div>
+
+    <!-- Profile Tabs -->
+    <div class="col-md-8">
+      <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview" role="tab">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="edit-tab" data-bs-toggle="tab" href="#edit" role="tab">Edit Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab">Settings</a>
+        </li>
+      </ul>
+
+      <div class="tab-content mt-3">
+        <!-- Overview Tab -->
+        <div class="tab-pane fade show active" id="overview" role="tabpanel">
+          <p><i class="fas fa-envelope text-warning"></i> {{  profile.user.email }}</p>
+          <p><i class="fas fa-phone  text-warning"></i>+{{ profile.phone }}</p>
+          <p><i class="fas fa-calendar-alt text-warning"></i> joined at: {{ profile.created_at|date:"d M, Y" }}</p>
+          <p><i class="fas fa-blog text-warning"></i> Blogs Published: {{ my_posts_count }}</p>
+        </div>
+
+        <!-- Edit Profile Tab -->
+        <div class="tab-pane fade" id="edit" role="tabpanel">
+          <form method="POST" action="{% url 'update' profile.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" name="fullname" class="form-control" value="{{ profile.user.first_name  }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Designation</label>
+              <input type="text" class="form-control" name="designation" value="{{ profile.designation }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" name="email" value="{{ profile.user.email }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone number</label>
+              <input type="tel" class="form-control" name="phone" value="{{ profile.phone }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Location</label>
+              <input type="text" class="form-control" name="location" value="{{ profile.location }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">website</label>
+              <input type="text" class="form-control" name="website" value="{{ profile.website }}">
+            </div>
+            <button type="submit" class="btn btn-gradient">Save Changes</button>
+          </form>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-pane fade" id="settings" role="tabpanel">
+          <p>Change your account settings:</p>
+          <a href="{% url 'changepassword' %}" class="btn btn-gradient mb-2"><i class="fas fa-key"></i> Change Password</a><br>
+          <a href="{% url 'logout' %}" class="btn btn-gradient"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+   </div>
+</div>
+
+
+{% endblock %}

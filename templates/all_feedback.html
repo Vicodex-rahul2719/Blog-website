@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+{% block title %}All Feedback{% endblock %}
+{% block content %}
+
+    <style>
+      .header-bar {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        border-radius: 15px;
+        padding: 6px 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+      .header-bar h2 {
+        font-weight: 700;
+        color: white;
+      }
+      .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      }
+      .card-img-top {
+        border-radius: 20px 20px 0 0;
+        height: 200px;
+        object-fit: cover;
+      }
+      .btn-edit {
+        background: linear-gradient(45deg, #1d976c, #93f9b9);
+        color: white;
+        font-weight: 600;
+      }
+      .btn-delete {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        color: white;
+        font-weight: 600;
+      }
+      .btn-edit:hover, .btn-delete:hover {
+        opacity: 0.9;
+      }
+      .profile-img {
+        object-fit: cover;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+      }
+      /* Author Name Styling */
+      .post-meta strong {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #212529;
+      }
+      /* Author Details */
+      .post-meta small {
+        font-size: 0.85rem;
+        color: #444;
+      }
+      .badge-category {
+        background: linear-gradient(45deg, #0072ff, #00c6ff);
+        font-size: 0.75rem;
+      }
+      h5:hover {
+        text-decoration: underline;
+        color: #0072ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container my-3 mt-3">
+  <!-- Header -->
+  <div class="header-bar mb-2 mt-2 text-center">
+    <h2 class="text-center mb-1">📋 All Feedback</h2>
+    <p class="text-white mb-0">Total Feedback Entries: <strong>{{ total_feedback }}</strong></p>
+  </div>
+
+  <!-- Feedback Grid -->
+  <div class="row">
+    {% for feedback in feedbacks %}
+    <div class="col-md-6 col-lg-3 mt-2">
+      <div class="feedback-card border rounded p-3 mb-3 bg-light shadow-sm h-100">
+        <p class="mb-2 small">
+          <span class="fw-bold">🌟 {{ feedback.name }}:</span> {{ feedback.feedback }}
+        </p>
+        <small class="text-muted">📅 {{ feedback.created_at|timesince }} ago</small>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <p class="text-muted text-center">No feedback yet. Be the first to share your thoughts!</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+  </body>
+</html>
+{% endblock %}

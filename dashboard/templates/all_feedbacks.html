@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+{% block content %}
+  <style>
+    body { background-color: #f4f6f9; }
+    .header-bar {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      border-radius: 15px;
+      padding: 3px 6px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header-bar h2 { font-weight: 700; color: white; }
+    .btn-back {
+      background: white;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .btn-back:hover { background: #ddd; }
+    .bg-gradient-green {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+    }
+    .delete-btn {
+      color: #dc3545;
+    }
+    .delete-btn:hover {
+      color: #a71d2a;
+    }
+  </style>
+<div class="container py-2">
+
+  <!-- Header -->
+  <div class="header-bar d-flex justify-content-between align-items-center mb-3 px-1 py-1">
+    <a href="{% url 'feedbacks' %}" class="btn btn-back">← Back</a>
+    <h2 class="text-center mb-0">FEEDBACKS</h2>
+    <div class="stat-card border-2 shadow bg-gradient-green rounded text-white px-1 py-1 text-center">
+      <h6 class="m-0">Total:</h6>
+      <p class="fs-5 fw-bold m-0">{{ feedback_count }}</p>
+    </div>
+  </div>
+
+  <!-- Feedbacks Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle feedback-table">
+      <thead class="table-dark text-white text-center">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Feedback</th>
+          <th>Posted</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fb in feedbacks %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ fb.name }}</td>
+          <td>{{ fb.feedback|truncatewords:10 }}</td>
+          <td>{{ fb.created_at|timesince }} ago</td>
+          <td class="text-center">
+            <form method="POST" action="{% url 'delete_feedback' fb.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link p-0 m-0 delete-btn" title="Delete Feedback" onclick="return confirm('Are you sure you want to delete this feedback?');">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center text-muted">No feedback available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

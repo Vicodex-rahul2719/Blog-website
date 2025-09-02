@@ -1,0 +1,265 @@
+
+{% extends './base/base.html' %}
+{% block title %}About Us{% endblock %}
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f7f9fc;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    color: #333;
+}
+
+/* ===== Hero Section / About Image Fix ===== */
+.hero-about {
+    position: relative;
+    max-width: 1400px;
+    min-height: 40vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+    margin: 30px auto;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+    overflow: hidden;
+}
+.hero-about h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: black;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero-about p {
+    font-size: 1rem;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* ===== About Section ===== */
+.about-section {
+    padding: 20px 0 20px 0;
+}
+.about-section .row {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.about-text {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+.about-text h1 {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.about-text p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+.about-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.about-image img {
+    width: 100%;
+    max-width: 500px;   /* fixed max width */
+    height: 350px;      /* fixed height */
+    object-fit: cover;  /* scale without stretching */
+    border-radius: 12px;
+}
+
+/* ===== Mission & Vision ===== */
+.mission-vision {
+    padding: 20px 0 40px 0;
+    margin-top: -10px;
+}
+.flip-card {
+    perspective: 1200px; 
+    margin-bottom: 25px; 
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner { 
+    transform: rotateY(180deg); 
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    color:#fff;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+    font-size:1rem;
+    text-align:center;
+}
+.flip-card-front { background: linear-gradient(135deg, #ff416c, #ff4b2b); font-weight:700; }
+.flip-card-back { background: linear-gradient(135deg, #667eea, #764ba2); transform: rotateY(180deg); font-weight:500; }
+
+/* ===== Team Cards ===== */
+.team-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.4s, box-shadow 0.4s;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.team-card:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+.team-img-wrapper {
+    width: 140px;
+    height: 140px;
+    margin: 20px auto 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6a11cb;
+}
+.team-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+.team-card:hover img { transform: scale(1.1) rotate(2deg); }
+.team-info h5 { font-weight:700; margin-bottom:5px; color:#333; }
+.team-info p { font-size:0.95rem; color:#555; margin-bottom:5px; }
+.team-info span { font-size:0.85rem; color:#777; display:block; }
+.social-icons a { margin:0 5px; color:#6a11cb; transition:0.3s; }
+.social-icons a:hover { transform: scale(1.3); color:#ff416c; }
+
+/* Section Titles */
+.section-title {
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:30px;
+    text-align:center;
+    background: linear-gradient(90deg, #ff416c,#ffb347);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+/* your about page CSS stays same */
+</style>
+
+<!-- Who We Are -->
+<section class="about-section container py-3 mb-3">
+  <div class="container">
+    <div class="text-center rounded-4 mb-2" 
+         style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); padding: 3px 0;">
+      <h2 class="section-title" style="margin-bottom: 5px; font-size: 1.6rem;">About Us</h2>
+    </div>
+
+    <div class="row g-0 mt-2">
+      <!-- Left Column: Text -->
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center about-text text-center p-3">
+        <h1>Who We Are</h1>
+        <p>
+          We are a premium blog platform, connecting passionate writers with readers worldwide. 
+          Our goal is to create meaningful content and empower creators to shine online.
+        </p>
+      </div>
+      <!-- Right Column: Image -->
+      <div class="col-md-6 about-image">
+        {% if group_image %}
+          <img src="{{ group_image.image.url }}" alt="Our Team">
+        {% else %}
+          <img src="/static/img/logo.png" alt="Blog Illustration">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission & Vision -->
+<section class="mission-vision container py-1">
+  <div class="text-center rounded-4 mb-2"
+       style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); padding: 3px 0;">
+    <h2 class="section-title" style="margin-bottom: 5px; font-size: 1.6rem;">Our Mission & Vision</h2>
+  </div>
+
+  <div class="row g-2">
+    <div class="col-md-6">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">Our Mission</div>
+          <div class="flip-card-back">
+            Provide an engaging platform for writers to share knowledge, creativity, 
+            and connect with readers globally.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">Our Vision</div>
+          <div class="flip-card-back">
+            Become the leading blog community where ideas flourish, readers engage, 
+            and creators inspire globally.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Meet Our Team -->
+<section class="container py-1 mb-2">
+  <div class="text-center rounded-4 mb-2 d-flex justify-content-center align-items-center"
+       style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); padding: 3px 0;">
+    <h2 class="section-title" style="margin-bottom: 5px; font-size: 1.6rem;">Meet Our Team</h2>
+  </div>
+
+  <div class="row justify-content-center g-2">
+    {% for member in team_members %}
+    <div class="col-sm-6 col-md-4">
+      <div class="team-card">
+        <div class="team-img-wrapper">
+          <img src="{{ member.image.url }}" alt="{{ member.name }}">
+        </div>
+        <div class="team-info p-2">
+          <h5>{{ member.name }}</h5>
+          <span>{{ member.description }}</span>
+          <div class="social-icons mt-2">
+            {% if member.twitter %}<a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
+            {% if member.linkedin %}<a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>{% endif %}
+            {% if member.instagram %}<a href="{{ member.instagram }}"><i class="fab fa-instagram"></i></a>{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+{% block title %}Single Blog Post{% endblock %}
+{% block content %}
+  <style>
+    body{
+      background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+    }
+    .header-bar {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      border-radius: 15px;
+      padding: 6px 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header-bar h2 {
+      font-weight: 700;
+      color: white;
+    }
+    .card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .card-title:hover {
+      text-decoration: underline;
+      color: #2575fc;
+    }
+    .blog-meta {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    .blog-content p {
+      text-align: justify;
+    }
+    .text-danger:hover {
+      text-decoration: underline;
+      color: red;
+    }
+    .profile-img {
+      object-fit: cover;
+      width: 55px;
+      height: 55px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Blog Content -->
+  <div class="container my-5 mt-3">
+    <div class="header-bar mb-4">
+      <h2 class="text-center mb-0 text-white">{{category}} Related</h2>
+    </div>
+    
+
+    {% if post %}
+    {% for i in post %}
+    <div class="card mb-4">
+      <div class="card-body blog-content">
+        <a href="{% url 'blogs' i.slug %}" class="text-dark text-decoration-none">
+          <h2 class="card-title text-primary">{{i.title}}</h2>
+        </a>
+        <p class="blog-meta">📅 Posted {{ i.created_at|timesince }} ago</p>
+        
+        <p>{{ i.blog_body|truncatewords:100 | safe }}</p>
+        
+        <a href="{% url 'blogs' i.slug %}" class="text-decoration-none">
+          <p class="fw-bold text-danger">Read More...</p>
+        </a>
+
+        <!-- Author Section -->
+        <div class="d-flex align-items-center gap-3 mt-3">
+          <img src="{% if i.author.profile.profile_image %}{{ i.author.profile.profile_image.url }}{% else %}/static/images/default-avatar.png{% endif %}" 
+               alt="author" class="rounded-circle profile-img">
+          <div>
+            <div class="fw-bold">👤Post by:-{{i.author.get_full_name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info text-center fw-bold">
+      🚫 No blog yet in this category.
+    </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>
+{% endblock %}

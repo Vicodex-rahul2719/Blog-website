@@ -1,0 +1,147 @@
+{% extends 'base/base.html' %}
+{% block title %}Featured Poat{% endblock %}
+{% block content %}
+
+    <style>
+      .header-bar {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        border-radius: 15px;
+        padding: 6px 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+      .header-bar h2 {
+        font-weight: 700;
+        color: white;
+      }
+      .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      }
+      .card-img-top {
+        border-radius: 20px 20px 0 0;
+        height: 200px;
+        object-fit: cover;
+      }
+      .btn-edit {
+        background: linear-gradient(45deg, #1d976c, #93f9b9);
+        color: white;
+        font-weight: 600;
+      }
+      .btn-delete {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        color: white;
+        font-weight: 600;
+      }
+      .btn-edit:hover, .btn-delete:hover {
+        opacity: 0.9;
+      }
+      .profile-img {
+        object-fit: cover;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+      }
+      /* Author Name Styling */
+      .post-meta strong {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #212529;
+      }
+      /* Author Details */
+      .post-meta small {
+        font-size: 0.85rem;
+        color: #444;
+      }
+      .badge-category {
+        background: linear-gradient(45deg, #0072ff, #00c6ff);
+        font-size: 0.75rem;
+      }
+      h5:hover {
+        text-decoration: underline;
+        color: #0072ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container my-5 mt-2">
+      <!-- Header -->
+      <div class="header-bar mb-2 mt-2">
+        <h2 class="text-center mb-0">AVAILABLE FEATURED POSTS</h2>
+      </div>
+
+      <!-- Posts Grid -->
+      <div class="row g-4">
+        {% for i in f %}
+          <div class="col-md-6 col-lg-4 rounded">
+            <div class="card h-100">
+              <img src="/media/{{ i.blog_image }}" class="card-img-top" alt="Post Image">
+
+              <div class="card-body d-flex flex-column">
+                
+                <!-- Title -->
+                <h5 class="card-title fw-bold">
+                  <a href="{% url 'blogs' i.slug %}" class="text-dark text-decoration-none">
+                    {{ i.title }}
+                  </a>
+                </h5>
+
+                <!-- Short Description -->
+                <p class="card-text text-muted">
+                  {{ i.short_description | truncatewords:20 }}
+                </p>
+
+                <!-- Author Section -->
+                <div class="d-flex align-items-center gap-2">
+                  <img src="{% if i.author.profile.profile_image %}{{ i.author.profile.profile_image.url }}{% else %}/static/images/default-avatar.png{% endif %}" 
+                       alt="author" class="profile-img">
+                  <p class="post-meta mb-0">
+                    <strong>👤 Post by: {{ i.author.get_full_name }}</strong><br>
+                    <small>📅 {{ i.created_at | timesince }} ago 
+                    <a href="{% url 'blogs' i.slug %}" class="badge badge-category ms-2 text-decoration-none">#Blogger</a></small>
+                  </p>
+                </div>
+
+                <!-- Footer -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="d-flex gap-2 align-items-center">
+              {% if user.is_authenticated %}
+              <form method="post" action="{% url 'like_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.liked_users.all %}btn-success{% else %}btn-outline-success{% endif %}">
+                  👍 {{ i.liked_users.count }}
+                </button>
+              </form>
+              <form method="post" action="{% url 'dislike_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.disliked_users.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                  👎 {{ i.disliked_users.count }}
+                </button>
+              </form>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-sm btn-outline-secondary">👍👎</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" style="text-decoration: none;">💬 {{ i.comment_count }}</a>
+            </div>
+            <div>
+              {% if user.is_authenticated and i.author == user %}
+              <a href="{% url 'update_blog' i.id %}" class="btn btn-edit btn-sm">✏️ Edit</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" class="btn btn-primary btn-sm">👁️</a>
+            </div>
+          </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </body>
+</html>
+{% endblock %}

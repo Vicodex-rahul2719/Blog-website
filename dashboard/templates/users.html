@@ -1,0 +1,186 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+    <style>
+      body {
+        background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+      }
+
+      /* Sidebar Glass Effect */
+      .sidebar {
+        min-height: 100vh;
+        backdrop-filter: blur(12px);
+        padding: 25px 18px;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        background: rgba(25, 25, 35, 0.95);
+      }
+
+      /* Menu Styling */
+      .menu-card {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.4s ease;
+      }
+
+      .menu-card i { margin-right: 10px; }
+      .menu-card:hover {
+        background: linear-gradient(135deg, #4e73df, #1cc88a);
+        transform: translateX(5px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      }
+
+      /* Header Bar */
+      .header-bar {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        border-radius: 15px;
+        padding: 3px 6px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+      .header-bar h2 {
+        font-weight: 700;
+        color: white;
+      }
+
+      /* Back-to-Top Button */
+      #backToTop {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        display: none;
+        border-radius: 50%;
+        padding: 12px 16px;
+      }
+      .bg-gradient-green { background: linear-gradient(135deg, #11998e, #38ef7d); }
+
+      /* Mobile adjustments */
+      @media (max-width: 992px) {
+        .sidebar {
+          min-height: auto;
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+
+    <!-- Alert Messages -->
+    {% for message in messages %}
+    <div class="alertdiv alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      <strong>Alert!</strong> {{ message }}
+      <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close" id="close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+
+    <script>
+      document.querySelector("#close").addEventListener("click", function () {
+        document.querySelector(".alertdiv").style.display = "none";
+      });
+    </script>
+
+    <div class="container-fluid py-4">
+      <div class="row g-3">
+        <!-- Sidebar Menu -->
+        {% include 'leftsidebar.html' %}
+        <!-- Main Content -->
+        <div class="col-lg-9">
+          <div class="container">
+
+            <!-- Heading -->
+            <a href="{% url 'all_users' %}" class="text-decoration-none">
+              <div class="header-bar d-flex justify-content-between align-items-center mb-3">
+                <h2 class="mb-0">USERS</h2>
+                <span class="text-white fw-bold">View All users→</span>
+              </div>
+            </a>
+            <a href="{% url 'add_users' %}" class="btn btn-dark px-4 mb-2">ADD New User</a>
+            <div class="row g-2">
+              <!-- Responsive Table -->
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Active</th>
+                      <th>Staff</th>
+                      <th>Superuser</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in users %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ i.first_name }} {{ i.last_name }}</td>
+                      <td>{{ i.username }}</td>
+                      <td>{{ i.email }}</td>
+                      <td>
+                        {% if i.is_active %}
+                          <i class="fas fa-check text-success"></i>
+                        {% else %}
+                          <i class="fas fa-times text-danger"></i>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if i.is_staff %}
+                          <i class="fas fa-check text-success"></i>
+                        {% else %}
+                          <i class="fas fa-times text-danger"></i>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if i.is_superuser %}
+                          <i class="fas fa-check text-success"></i>
+                        {% else %}
+                          <i class="fas fa-times text-danger"></i>
+                        {% endif %}
+                      </td>
+                      <td>
+                          &nbsp;&nbsp;<a href="{% url 'edit_users' i.id %}"><i class="fa fa-edit text-success"></i></a> &nbsp;&nbsp;&nbsp;
+                          <a href="{% url 'delete_users' i.id %}"><i class="fa fa-trash text-danger"></i></a>
+                          </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="btn btn-primary shadow">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+
+    <script>
+      // Show/Hide Back-to-Top Button
+      let backToTopBtn = document.getElementById("backToTop");
+      window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+          backToTopBtn.style.display = "block";
+        } else {
+          backToTopBtn.style.display = "none";
+        }
+      };
+      // Scroll to Top
+      backToTopBtn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
+ 
+{% endblock %}

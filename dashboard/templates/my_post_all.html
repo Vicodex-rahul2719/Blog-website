@@ -1,0 +1,208 @@
+{% extends 'base/base.html' %}
+{% block content %}
+  <style>
+    body {
+      background-color: #f4f6f9;
+    }
+
+    /* Header Bar */
+    .header-bar {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      border-radius: 15px;
+      padding: 3px 6px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header-bar h2 {
+      font-weight: 700;
+      color: white;
+    }
+
+    /* Buttons */
+    .btn-back {
+      background: white;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .btn-back:hover {
+      background: #ddd;
+    }
+    .btn-view {
+      background: #ffcc00;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .btn-view:hover {
+      background: #e6b800;
+    }
+
+    /* Cards */
+    .post-card {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+    }
+    .post-img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(1.01);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .card-img-top {
+      border-radius: 20px 20px 0 0;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    /* Action Buttons */
+    .btn-edit {
+      background: linear-gradient(45deg, #1d976c, #93f9b9);
+      color: white;
+      font-weight: 600;
+    }
+    .btn-delete {
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
+      font-weight: 600;
+    }
+    .btn-edit:hover,
+    .btn-delete:hover {
+      opacity: 0.9;
+    }
+
+    /* Meta */
+    .post-meta {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    .badge-category {
+      background: linear-gradient(45deg, #0072ff, #00c6ff);
+      font-size: 0.75rem;
+    }
+
+    h5:hover {
+      text-decoration: underline;
+      color: #0072ff;
+    }
+
+    /* Extra */
+    .bg-gradient-green {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+    }
+
+    /* Read Button */
+.btn-read {
+  background: linear-gradient(45deg, #0072ff, #00c6ff);
+  color: white;
+  font-weight: 600;
+}
+.btn-read:hover {
+  opacity: 0.9;
+  color: white;
+}
+
+
+    /* Mobile adjustments */
+    @media (max-width: 992px) {
+      .sidebar {
+        min-height: auto;
+        margin-bottom: 5px;
+      }
+    }
+  </style>
+  <div class="container py-2">
+
+    <!-- Header -->
+    <div class="header-bar d-flex justify-content-between align-items-center mb-2">
+      <a href="{% url 'my_posts' %}" class="btn btn-back">← Back</a>
+      <h2 class="text-center mb-0">MY POSTS</h2>
+      <div class="stat-card border-2 shadow bg-gradient-green rounded text-white px-1">
+        <h6 class="m-0">Total Posts:-</h6>
+        <p class="fs-5 fw-bold m-0 text-center">{{my_posts_count}}</p>
+      </div>
+    </div>
+
+    <!-- My Posts Section -->
+    <div class="row g-2">
+      {% if posts %}
+      {% for i in posts %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card h-100">
+      <img src="/media/{{ i.blog_image }}" class="card-img-top" alt="Post Image">
+
+      <div class="card-body d-flex flex-column">
+
+        <!-- Title -->
+        <h5 class="card-title fw-bold">
+          <a href="{% url 'blogs' i.slug %}" class="text-dark text-decoration-none">
+            {{ i.title }}
+          </a>
+        </h5>
+
+        <!-- Description -->
+        <p class="card-text mb-2">
+          {{ i.short_description | truncatewords:20 }}
+        </p>
+
+        <!-- Post Meta -->
+        <p class="post-meta mb-2">
+          👤 {{ i.author.get_full_name }} &nbsp;|&nbsp; 📅 {{ i.created_at|timesince }} ago
+          <a href="#" class="badge badge-category ms-2 text-decoration-none">#Blogger</a>
+        </p>
+
+        <!-- Like / Dislike / Comment -->
+        <div class="d-flex gap-2 align-items-center mb-3">
+          <form method="post" action="{% url 'like_blog' i.id %}" style="display:inline;">{% csrf_token %}
+            <button type="submit" 
+                        class="btn btn-sm {% if user in i.liked_users.all %}btn-success{% else %}btn-outline-success{% endif %}">
+                  👍 {{ i.liked_users.count }}
+                </button>
+          </form>
+          <form method="post" action="{% url 'dislike_blog' i.id %}" style="display:inline;">{% csrf_token %}
+            <button type="submit" 
+                        class="btn btn-sm {% if user in i.disliked_users.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                  👎 {{ i.disliked_users.count }}
+                </button>
+          </form>
+          <a href="{% url 'blogs' i.slug %}" class="text-muted" style="font-size: 0.9rem;">💬 {{ i.comment_count }}</a>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="d-flex justify-content-between mt-auto">
+          <div>
+            <a href="{% url 'update_blog' i.id %}" class="btn btn-edit btn-sm">✏️ Edit</a>
+            <a href="{% url 'delete_blog' i.id %}" class="btn btn-delete btn-sm">🗑️ Delete</a>
+          </div>
+          <a href="{% url 'blogs' i.slug %}" class="btn btn-read btn-sm">👁️</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% else %}
+  <div class="col-12 text-center py-5">
+    <h4 class="text-muted">😔 You haven't posted anything yet.</h4>
+    <a href="{% url 'add_blog' %}" class="btn btn-primary mt-3">➕ Create your first post</a>
+  </div>
+{% endif %}
+
+    </div>
+
+  </div>
+
+{% endblock %}

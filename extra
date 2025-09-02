@@ -1,0 +1,15 @@
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Gmail account you’re sending from
+EMAIL_HOST_USER = 'amitkumbhakar62@gmail.com'
+
+# 16-character App Password you generated from Google
+EMAIL_HOST_PASSWORD = 'xpmytmnhiykfsxgk'
+
+# Where to receive admin notifications (can be same as sender)
+ADMIN_EMAIL = 'amitkumbhakar62@gmail.com'
+# Where contact messages are sent original password:- amitkumar123456@
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

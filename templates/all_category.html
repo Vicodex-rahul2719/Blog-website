@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+  <style>
+    body{
+         background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+      }
+      .header-bar {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      border-radius: 15px;
+      padding: 6px 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header-bar h2 {
+      font-weight: 700;
+      color: white;
+    }
+    .category-card {
+      transition: transform 0.3s;
+      cursor: pointer;
+      backdrop-filter: blur(50px); 
+      background-color: rgba(206, 246, 225, 0.8);
+    }
+    .category-card:hover {
+      transform: scale(1.02);
+      background-color:white;
+    }
+    .category-card h5:hover{
+       text-decoration: underline;
+    }
+    .category-icon {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+    }
+  </style>
+
+<div class="container">
+    <!-- Header -->
+     <div class="header-bar mb-2 mt-2">
+     <h2 class="text-center mb-0">AVAILABLE CATEGORIES ADDED BY ADMIN</h2>
+     </div>
+  <div class="row g-2 mb-2 ">
+     {% for i in categories %}
+     <div class="col-md-4 col-sm-6">
+      <a href="{% url 'specific_category' i.id %}" style="text-decoration: none;">
+      <div class="card category-card text-center p-3 shadow-sm ">
+        <h5 class="card-title text-primary">{{i.category_name}}</h5>
+        <small class="mb-1 text-muted">{{ i.created_at|timesince }} ago by, Admin.</small>
+      </div>
+      </a>
+     </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

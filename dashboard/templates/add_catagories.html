@@ -1,0 +1,161 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <style>
+      body {
+        background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+      }
+
+      /* Sidebar Glass Effect */
+      .sidebar {
+        min-height: 100vh;
+        backdrop-filter: blur(12px);
+        padding: 25px 18px;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        background: rgba(25, 25, 35, 0.95);
+      }
+
+      /* Menu Styling */
+      .menu-card {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.4s ease;
+      }
+
+      .menu-card i {
+        margin-right: 7px;
+        font-size: 1.2rem;
+      }
+      .menu-card i { margin-right: 10px; }
+    .menu-card:hover {
+      background: linear-gradient(135deg, #4e73df, #1cc88a);
+      transform: translateX(5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+      .category-card {
+        transition: transform 0.3s;
+        cursor: pointer;
+        backdrop-filter: blur(50px);
+      }
+
+      .category-card:hover {
+        transform: scale(1.02);
+        background-color: white;
+      }
+
+      .category-card h5:hover {
+        text-decoration: underline;
+      }
+
+      .category-icon {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+      }
+
+      .text-primary:hover {
+        text-decoration: none;
+      }
+
+      .bg-gradient-green {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+      }
+
+      /* Mobile adjustments */
+      @media (max-width: 992px) {
+        .sidebar {
+          min-height: auto;
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  
+    <!-- Alert Messages -->
+    {% for message in messages %}
+    <div class="alertdiv alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      <strong>Alert!</strong> {{ message }}
+      <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close" id="close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+
+    <script>
+      document.querySelector("#close").addEventListener("click", function () {
+        document.querySelector(".alertdiv").style.display = "none";
+      });
+    </script>
+
+    <div class="container-fluid py-4">
+      <div class="row g-3">
+        <!-- Sidebar Menu -->
+        {% include 'leftsidebar.html' %}
+        <!-- Main Content -->
+        <div class="col-lg-9">
+          <div class="container">
+
+            <!-- Heading -->
+            <div class="container heading-middle rounded" style="background-color: rgba(24, 9, 54, 1)">
+              <h2 class="text-center text-warning"><b>ADD NEW CATEGORY</b></h2>
+            </div>
+
+            {% load crispy_forms_tags %}
+            <div class="row g-2">
+              <!-- Add Category Form -->
+              <form action="" method="POST" class="mb-3 mt-2">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
+                  <!-- ADD Button -->
+                  <button type="submit" class="btn btn-primary px-4">ADD</button>
+
+                  <!-- Total Category Card -->
+                  <div class="stat-card border-2 shadow bg-gradient-green text-center px-3 rounded text-white"style="border: 2px solid black; min-width: 160px;">
+                    <h6 class="m-0">Total Category</h6>
+                    <p class="fs-5 fw-bold m-0">{{ categories_count }}</p>
+                  </div>
+
+                  <!-- View All Button -->
+                  <a href="{% url 'all_categories' %}" class="btn btn-dark px-4">View All →</a>
+                </div>
+              </form>
+
+              <!-- Categories Table -->
+              <table class="table table-hover h-auto">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>CATEGORY NAME</th>
+                    <th>BLOGS</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in categories %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      <a href="{% url 'specific_category' i.id %}" style="text-decoration: none">{{ i.category_name }}</a>
+                    </td>
+                    <td>{{ i.blog_count }}</td> <!-- per-category blog count -->
+                    <td> 
+                      <a href="{% url 'edit_catagories' i.id %}"><i class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;&nbsp;
+                      <a href="{% url 'delete_catagories' i.id %}"><i class="fa fa-trash text-danger"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

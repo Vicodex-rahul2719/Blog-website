@@ -1,0 +1,221 @@
+{% extends './base/base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+    <style>
+        body {
+            background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+            min-height: 100vh;
+        }
+
+        .container-box {
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        .form-box {
+            color: #333;
+            text-align: center;
+            padding: 40px 30px;
+        }
+        .form-box h2 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .input-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            border-radius: 8px;
+            /* border: none; */
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .input-box input:focus {
+            background: #e9e9ff;
+            outline: none;
+        }
+        .input-box .gray {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: black;
+        }
+
+        .toggle-password{
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #888;
+        }
+        .btn-custom {
+            background: #7494ec;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            transition: background 0.3s;
+        }
+        .btn-custom:hover {
+            color: yellow;
+        }
+        .social-icons a {
+            display: inline-flex;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 20px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 6px;
+            transition: all 0.3s;
+        }
+        .social-icons a:hover {
+            background: #7494ec;
+            color: #fff;
+            border-color: #7494ec;
+        }
+        .right-panel {
+            background: linear-gradient(135deg, #7494ec, #556de6);
+            color: #fff;
+            text-align: center;
+            padding: 40px 30px;
+           border-radius: 10px;
+        }
+        .right-panel h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .right-panel p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .login{
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-weight: 600;
+            /* transition: background 0.3s; */
+            background: rgba(24, 9, 54, 1);
+            color: yellow;
+        }
+        .login:hover{
+            background: rgba(24, 9, 54, 1);
+            color: yellow;
+        }
+
+        .toggle-password:hover{
+            cursor: pointer;
+            color: black;
+        }
+        /* .gradient-text {
+        background: linear-gradient(to right, #4a00e0, #2de2d0, #e94057);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      } */
+      
+    </style>
+</head>
+<body>
+    {% for message in messages %}
+  <div class=" alertdiv alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Alert !</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+
+  <script>
+    document.querySelector("#close").addEventListener("click", function () {
+      document.querySelector(".alertdiv").style.display = "none";
+
+    });
+  </script>
+
+<div class="container py-5 mt-0 main-body">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-11">
+            <div class="container heading-middle rounded d-flex justify-content-center align-items-center" style="background-color: rgba(24, 9, 54, 1); height: 50px;">
+               <h3 class="text-center text-warning"><b class="mt-2">Create an account quickly</b></h3>
+            </div>
+            <div class="row container-box mt-2 body">
+
+               <!-- Left Panel -->
+                <div class="col-12 col-md-6 right-panel d-flex flex-column justify-content-center align-items-center">
+                    <h2 style="color: black ">Hello Sir,</h2>
+                    <h2 style="color: black ">Register quickly to become a writer !</h2>
+                    <p style="color: black "> If already have an account then,</p>
+                    <a href="{% url 'login' %}" style="text-decoration: none;"><button type="submit" class="btn login">Login</button></a>
+                </div>
+
+                <!-- Right Form -->
+                <div class="col-12 col-md-6 form-box">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="input-box">
+                            <input type="text" name="fullname" placeholder="Enter full name" required>
+                            <i class="fa-solid fa-user gray"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="email" name="email" placeholder="Enter email" required>
+                            <i class="fa-regular fa-envelope gray"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="tel" name="number" placeholder="Enter number" required>
+                            <i class="fa-solid fa-phone gray"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="password" name="password" placeholder="Enter password atleast 8 characters" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="password" name="cpassword" placeholder="Confirm password must be same as password" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100 py-2 bg-warning text-dark">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Showing the password during the typing time -->
+<script>
+document.querySelectorAll(".toggle-password").forEach(icon => {
+    icon.addEventListener("click", function() {
+        let input = this.previousElementSibling; // get the input before the icon
+        if (input.type === "password") {
+            input.type = "text";
+            this.classList.remove("fa-eye");
+            this.classList.add("fa-eye-slash");
+            this.style.color = "black";
+        } else {
+            input.type = "password";
+            this.classList.remove("fa-eye-slash");
+            this.classList.add("fa-eye");
+            this.style.color = "gray";
+        }
+    });
+});
+</script>
+
+</body>
+</html>
+
+{% endblock %}
+
+

@@ -1,0 +1,42 @@
+<!-- Edit Profile Tab
+<div class="tab-pane fade" id="edit" role="tabpanel">
+    <form method="POST" action="{% url 'update' profile.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" name="first_name" value="{{ profile.first_name }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="last_name" value="{{ profile.last_name }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Designation</label>
+            <input type="text" class="form-control" name="designation" value="{{ profile.designation }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" value="{{ profile.email }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" name="phone" value="{{ profile.phone }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input type="text" class="form-control" name="location" value="{{ profile.location }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Profile Image</label>
+            <input type="file" class="form-control" name="profile_image">
+        </div>
+
+        <button type="submit" class="btn-gradient">Save Changes</button>
+    </form>
+</div> -->

@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+{% block content %}
+  <style>
+    body { background-color: #f4f6f9; }
+    .header-bar {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      border-radius: 15px;
+      padding: 3px 6px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header-bar h2 { font-weight: 700; color: white; }
+    .btn-back {
+      background: white;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .btn-back:hover { background: #ddd; }
+    .bg-gradient-green {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+    }
+    .delete-btn {
+      color: #dc3545;
+    }
+    .delete-btn:hover {
+      color: #a71d2a;
+    }
+  </style>
+
+<div class="container py-2">
+
+  <!-- Header -->
+  <div class="header-bar d-flex justify-content-between align-items-center mb-3 px-1 py-1">
+    <a href="{% url 'comments' %}" class="btn btn-back">← Back</a>
+    <h2 class="text-center mb-0">
+      {% if request.user.is_staff or request.user.is_superuser %}
+        COMMENTS
+      {% else %}
+        MY COMMENTS
+      {% endif %}
+    </h2>
+    <div class="stat-card border-2 shadow bg-gradient-green rounded text-white px-1 py-1 text-center">
+      <h6 class="m-0">Comments:</h6>
+      <p class="fs-5 fw-bold m-0">{{ comment_count }}</p>
+    </div>
+  </div>
+
+  <!-- Admin Comments Table -->
+  {% if request.user.is_staff or request.user.is_superuser %}
+    <h4 class="mt-3 text-danger">👑 Admin Comments</h4>
+    {% if admin_comments %}
+      <div class="table-responsive mb-4">
+        <table class="table table-bordered table-striped align-middle">
+          <thead class="table-danger text-center">
+            <tr>
+              <th>#</th>
+              <th>Comment</th>
+              <th>Admin</th>
+              <th>Blog</th>
+              <th>Posted</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in admin_comments %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ i.comment }}</td>
+               <td>{{ i.user.get_full_name|default:i.user.username }} <span class="badge bg-primary ms-2">Admin</span></td>
+              <td>{{ i.blog.title }}</td>
+              <td>{{ i.created_at|timesince }} ago</td>
+              <td class="text-center">
+                <a href="{% url 'delete_comment' i.id %}" class="delete-btn" title="Delete Comment">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="alert alert-warning">No admin comments yet.</div>
+    {% endif %}
+  {% endif %}
+
+  <!-- User Comments Table -->
+  {% if request.user.is_staff or request.user.is_superuser %}
+    <h4 class="text-primary">👥 User Comments</h4>
+  {% endif %}
+
+  {% if user_comments %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>#</th>
+            <th>Comment</th>
+            {% if request.user.is_staff or request.user.is_superuser %}
+              <th>User</th>
+            {% endif %}
+            <th>Blog</th>
+            <th>Posted</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in user_comments %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.comment }}</td>
+            {% if request.user.is_staff or request.user.is_superuser %}
+               <td>{{ i.user.get_full_name|default:i.user.username }} <span class="badge bg-secondary ms-2">User</span></td>
+            {% endif %}
+            <td>{{ i.blog.title }}</td>
+            <td>{{ i.created_at|timesince }} ago</td>
+            <td class="text-center">
+              <a href="{% url 'delete_comment' i.id %}" class="delete-btn" title="Delete Comment">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center">
+      {% if request.user.is_staff or request.user.is_superuser %}
+        No user comments found.
+      {% else %}
+        You haven’t commented on any blogs yet.
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

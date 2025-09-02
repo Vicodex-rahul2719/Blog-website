@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <title>Home Page</title>
+  <style>
+    body {
+      background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+    }
+
+    .header-bar {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      border-radius: 12px;
+      padding: 10px 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .header-bar h2 {
+      font-weight: 700;
+      color: white;
+      font-size: 1.4rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .card-img-top {
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .card-text {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: #555;
+      flex-grow: 1;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .profile-img {
+      object-fit: cover;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 8px;
+      border: 2px solid #ddd;
+    }
+    .post-meta strong {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #212529;
+    }
+    .post-meta small {
+      font-size: 0.85rem;
+      color: #444;
+    }
+
+    .btn-edit {
+      background: linear-gradient(45deg, #1d976c, #93f9b9);
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+    .btn-delete {
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+    .btn-edit:hover, .btn-delete:hover {
+      opacity: 0.9;
+    }
+
+    .badge-category {
+      background: linear-gradient(45deg, #0072ff, #00c6ff);
+      font-size: 0.7rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, #4a00e0, #2de2d0, #e94057);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h5 a:hover {
+      text-decoration: underline;
+      color: #0072ff;
+    }
+
+    .feedback-card {
+      border-left: 5px solid #0072ff;
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .comment-box {
+      border-bottom: 1px solid #ddd;
+      padding: 12px 0;
+    }
+    .comment-user {
+      font-weight: 600;
+      color: #1a2a6c;
+    }
+    .comment-time {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+   
+.hero-section {
+  display: flex;
+  flex-wrap: wrap;            /* stack on mobile */
+  align-items: center;
+  min-height: 65vh;           /* increase hero section height */
+  padding: 20px 40px;         /* extra padding */
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;          /* larger image on desktop */
+  object-fit: cover;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* Tablet screens */
+@media (max-width: 992px) {
+  .hero-img {
+    max-height: 350px;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 576px) {
+  .hero-img {
+    max-height: 250px;        /* image stays below text */
+  }
+}
+
+
+
+  </style>
+</head>
+<body>
+{% extends 'base/base.html' %}
+{% block content %}
+ <!-- Alert Messages -->
+    {% for message in messages %}
+    <div class="alertdiv alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      <strong>Alert!</strong> {{ message }}
+      <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close" id="close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+
+    <script>
+      document.querySelector("#close").addEventListener("click", function () {
+        document.querySelector(".alertdiv").style.display = "none";
+      });
+    </script>
+    
+<div class="container py-5 pt-4 pb-2 px-4 px-md-4">
+  <div class="row align-items-center hero-section shadow-lg rounded p-4" style="background-color: rgba(206, 246, 225, 0.9);">
+
+    <!-- Hero Text -->
+    <div class="col-lg-6 order-1 order-lg-1 text-center text-lg-start mb-4 mb-lg-0 ">
+      <h1 class="display-3 fw-bold">
+        Read, Write & <span class="gradient-text">Connect</span>
+      </h1>
+      <p class="lead fw-bold" style="font-size:1.2rem;">
+        Discover insightful articles, creative stories, and practical advice from our community of passionate writers.
+      </p>
+      <div class="mt-3">
+        {% if most_commented %}
+          <a href="{% url 'blogs' most_commented.slug %}" class="btn btn-lg text-white me-2" style="background-color: rgba(24, 9, 54, 1);">Start Reading</a>
+        {% else %}
+          <a href="{% url 'all_blog' %}" class="btn btn-lg text-white me-2" style="background-color: rgba(24, 9, 54, 1);">Start Reading</a>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+          <a href="{% url 'login' %}" class="btn btn-warning btn-lg">Become a Writer</a>
+        {% else %}
+          <a href="{% url 'add_blog' %}" class="btn btn-warning btn-lg">Become a Writer</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Hero Image -->
+    <div class="col-lg-6 order-2 order-lg-2 text-center">
+      {% if most_commented and most_commented.blog_image %}
+        <a href="{% url 'blogs' most_commented.slug %}">
+          <img 
+            src="/media/{{ most_commented.blog_image }}" 
+            alt="{{ most_commented.title }}" 
+            class="hero-img img-fluid shadow-lg"
+          />
+        </a>
+      {% else %}
+        <!-- Fallback image if no blog exists -->
+        <img 
+          src="/static/images/default-hero.jpg" 
+          alt="Default Hero" 
+          class="hero-img img-fluid shadow-lg"
+        />
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<!-- Featured Posts Section -->
+<div class="container py-4">
+    <div class="header-bar d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0">FEATURED POSTS</h2>
+      <a  href="{% url 'featured_post' %}" class="btn btn-dark">View All →</a>
+    </div>
+  <div class="row g-3">
+    {% for i in featured_posts %}
+    <div class="col-md-6 col-lg-4 d-flex">
+      <div class="card flex-fill">
+        <img src="/media/{{i.blog_image}}" class="card-img-top" alt="Post Image">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">
+            <a href="{% url 'blogs' i.slug %}" class="text-dark text-decoration-none">{{i.title}}</a>
+          </h5>
+          <p class="card-text">{{i.short_description | truncatewords:20 }}</p>
+          <div class="author-info">
+            <img src="{% if i.author.profile.profile_image %}{{ i.author.profile.profile_image.url }}{% else %}/static/images/default-avatar.png{% endif %}" alt="author" class="profile-img">
+            <p class="post-meta mb-0">
+              <strong>👤Post by:-{{i.author.get_full_name}}</strong><br>
+              <small>📅 {{ i.created_at | timesince }} ago 
+              <a href="{% url 'blogs' i.slug %}" class="badge badge-category ms-2 text-decoration-none">#Blogger</a></small>
+            </p>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-auto">
+            <div class="d-flex gap-2 align-items-center">
+              {% if user.is_authenticated %}
+              <form method="post" action="{% url 'like_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.liked_users.all %}btn-success{% else %}btn-outline-success{% endif %}">
+                  👍 {{ i.liked_users.count }}
+                </button>
+              </form>
+              <form method="post" action="{% url 'dislike_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.disliked_users.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                  👎 {{ i.disliked_users.count }}
+                </button>
+              </form>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-sm btn-outline-secondary">👍👎</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" style="text-decoration: none;">💬 {{ i.comment_count }}</a>
+            </div>
+            <div>
+              {% if user.is_authenticated and i.author == user %}
+              <a href="{% url 'update_blog' i.id %}" class="btn btn-edit btn-sm">✏️ Edit</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" class="btn btn-primary btn-sm">👁️</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Latest Posts Section -->
+<div class="container pt-4 mb-3">
+    <div class="header-bar d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0">LATEST POSTS</h2>
+     <a  href="{% url 'latest_post' %}" class="btn btn-dark">View All →</a>
+    </div>
+  <div class="row g-3">
+    {% for i in latest_posts %}
+    <div class="col-md-6 col-lg-4 d-flex">
+      <div class="card flex-fill">
+        <img src="/media/{{i.blog_image}}" class="card-img-top" alt="Post Image">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">
+            <a href="{% url 'blogs' i.slug %}" class="text-dark text-decoration-none">{{i.title}}</a>
+          </h5>
+          <p class="card-text">{{i.short_description | truncatewords:20 }}</p>
+          <div class="author-info">
+            <img src="{% if i.author.profile.profile_image %}{{ i.author.profile.profile_image.url }}{% else %}/static/images/default-avatar.png{% endif %}" alt="author" class="profile-img">
+            <p class="post-meta mb-0">
+              <strong>👤Post by:-{{i.author.get_full_name}}</strong><br>
+              <small>📅 {{ i.created_at | timesince }} ago 
+              <a href="{% url 'blogs' i.slug %}" class="badge badge-category ms-2 text-decoration-none">#Blogger</a></small>
+            </p>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-auto">
+            <div class="d-flex gap-2 align-items-center">
+              {% if user.is_authenticated %}
+              <form method="post" action="{% url 'like_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.liked_users.all %}btn-success{% else %}btn-outline-success{% endif %}">
+                  👍 {{ i.liked_users.count }}
+                </button>
+              </form>
+              <form method="post" action="{% url 'dislike_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.disliked_users.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                  👎 {{ i.disliked_users.count }}
+                </button>
+              </form>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-sm btn-outline-secondary">👍👎</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" style="text-decoration: none;">💬 {{ i.comment_count }}</a>
+            </div>
+            <div>
+              {% if user.is_authenticated and i.author == user %}
+              <a href="{% url 'update_blog' i.id %}" class="btn btn-edit btn-sm">✏️ Edit</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" class="btn btn-primary btn-sm">👁️</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Feedback Section -->
+<div class="container pt-4 mb-3">
+  <div class="header-bar text-center mb-3">
+    <h2 class="mb-0">FEEDBACK</h2>
+  </div>
+
+  <form action="#" method="post" class="feedback-card p-3 border rounded shadow-sm bg-white mb-3">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="name" class="form-label fw-bold">👤 Your Name</label>
+    <input type="text" name="name" class="form-control" id="name" placeholder="Enter your full name" required>
+  </div>
+  <!-- <div class="mb-3">
+    <label for="email" class="form-label fw-bold">📧 Email</label>
+    <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email">
+  </div> -->
+  <div class="mb-3">
+    <label for="feedback" class="form-label fw-bold">💬 Your Feedback</label>
+    <textarea name="feedback" class="form-control" id="feedback" rows="3" placeholder="Write your feedback here..." required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary w-100">🚀 Submit Feedback</button>
+</form>
+</div>
+
+<!-- Reader Comments -->
+<div class="container pt-4 mb-5">
+  <div class="header-bar mb-3 d-flex justify-content-between align-items-center">
+    <h2 class="mb-0">What Our Readers Say</h2>
+    <a href="{% url 'all_feedback' %}" class="btn btn-dark">View all →</a>
+  </div>
+
+  <div class="row">
+    {% for feedback in feedback_list %}
+    <div class="col-md-6 col-lg-3 mt-2">
+      <div class="feedback-card border rounded p-3 mb-3 bg-light shadow-sm h-100">
+        <p class="mb-2 small">
+          <span class="fw-bold">🌟 {{ feedback.name }}:</span> {{ feedback.feedback }}
+        </p>
+        <small class="text-muted">📅 {{ feedback.created_at|timesince }} ago</small>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <p class="text-muted text-center">No feedback yet. Be the first to share your thoughts!</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{% endblock %}
+<script>
+  function updateVh() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+  }
+  window.addEventListener('resize', updateVh);
+  updateVh();
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<div class="categories py-2" style="border-bottom: 1px solid black;">
+  {% for i in categories%}
+  <!-- url for specific blog page for each an every category using the urls.py name value -->
+  <a href="{% url 'specific_category' i.id %}">{{i.category_name}}</a>
+  {% endfor %}
+</div>
+
+
+   

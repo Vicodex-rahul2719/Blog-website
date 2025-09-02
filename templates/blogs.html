@@ -1,0 +1,331 @@
+{% extends './base/base.html' %}
+{% block title %}Blogs{% endblock %}
+ {% block content %}
+
+    <style>
+      :root {
+        --accent: #6f42c1;
+        --muted: #6c757d;
+        --dark-bg: #0f0520;
+        --highlight: #ffc107;
+      }
+      body {
+        background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+      }
+
+      /* HERO */
+      .post-hero {
+        position: relative;
+        border-radius: 1rem;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .post-hero img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        filter: brightness(100%); /* ✅ BRIGHT IMAGE */
+      }
+
+      /* TITLE BELOW IMAGE */
+      .post-title {
+        font-size: 2.3rem;
+        font-weight: 700;
+        margin: 1.5rem 0 1rem 0;
+      }
+
+      /* ARTICLE CARD */
+      article {
+        border-radius: 1rem;
+        background: #fff;
+        padding: 2.5rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      }
+
+      /* AUTHOR */
+      .author-meta {
+        margin-top: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .author-meta img {
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+      }
+
+      /* CONTENT TYPOGRAPHY */
+      .content {
+        font-size: 1.03rem;
+      }
+      .content p {
+        line-height: 1.9;
+        font-size: 1.15rem;
+        margin-bottom: 1.6rem;
+        color: #333;
+      }
+      .content h2,
+      .content h3,
+      .content h4 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      .content blockquote {
+        padding: 1rem 1.25rem;
+        background: #f3f0fb;
+        border-left: 4px solid var(--accent);
+        border-radius: 0.5rem;
+        font-style: italic;
+        margin: 1.5rem 0;
+      }
+
+      /* RESPONSIVE RICH CONTENT */
+      .content a {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        text-decoration: underline;
+      }
+      .content img {
+        max-width: 100%;
+        height: auto !important;
+        border-radius: 0.5rem;
+        display: block;
+        margin: 1rem auto;
+      }
+      .content iframe,
+      .content video {
+        width: 100% !important;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        display: block;
+        margin: 1rem 0;
+      }
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        margin: 1rem 0;
+      }
+      .content table th,
+      .content table td {
+        padding: 0.6rem 0.8rem;
+        border: 1px solid #e9ecef;
+      }
+      .content pre {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 0.6rem;
+        padding: 1rem 1.25rem;
+        overflow: auto;
+        margin: 1rem 0 1.5rem;
+      }
+
+      /* SHARE */
+      .share-btn {
+        border-radius: 0.5rem;
+        padding: 0.55rem 1rem;
+        font-size: 0.95rem;
+        transition: 0.25s ease;
+      }
+      .share-btn:hover {
+        background: var(--accent);
+        color: #fff !important;
+      }
+
+      /* COMMENTS */
+      .comment {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 1rem 1.25rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+      .comment img {
+        border-radius: 50%;
+      }
+      .profile-img {
+        object-fit: cover; /* Crop & fit */
+        width: 55px; /* Fixed size */
+        height: 55px;
+      }
+      /* Comment Card */
+      .comment-card {
+        background: linear-gradient(135deg, #ffffff, #f8faff);
+        border: 1px solid #e6e9f2;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        transition: all 0.25s ease-in-out;
+      }
+      .comment-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        border-color: #cdd6f6;
+      }
+
+      /* Profile Image */
+      .profile-img {
+        width: 52px;
+        height: 52px;
+        object-fit: cover;
+        border: 2px solid #4e73df; /* Premium blue border */
+        background: #fff;
+      }
+
+      /* Comment Text */
+      .comment-text {
+        font-size: 0.95rem;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      /* Reply Button */
+      .comment-card .btn-outline-primary {
+        border-color: #4e73df;
+        color: #4e73df;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+      .comment-card .btn-outline-primary:hover {
+        background: #4e73df;
+        color: #fff;
+      }
+
+      .comment-box {
+        background: #fff;
+        border-left: 5px solid transparent;
+        transition: all 0.3s ease-in-out;
+      }
+      .comment-box:hover {
+        border-left: 5px solid #4e73df;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+      .comment-box h6 {
+        font-size: 1rem;
+      }
+      .bg-gradient-green {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+      }
+
+      @media (max-width: 576px) {
+        .post-hero img {
+          height: 320px;
+        }
+        .post-title {
+          font-size: 1.6rem;
+        }
+        article {
+          padding: 1.25rem;
+        }
+      }
+    </style>
+    {% for message in messages %}
+  <div class=" alertdiv alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Alert !</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+
+  <script>
+    document.querySelector("#close").addEventListener("click", function () {
+      document.querySelector(".alertdiv").style.display = "none";
+
+    });
+  </script>
+    <main class="py-5">
+      <div class="container">
+        <!-- HERO IMAGE -->
+        <div class="post-hero">
+          <img src="/media/{{single_post.blog_image}}" alt="cover" />
+        </div>
+
+        <!-- CONTENT -->
+        <div class="row">
+          <div class="col-12">
+            <article>
+              <!-- ✅ TITLE BELOW IMAGE -->
+              <h1 class="post-title text-danger">{{ single_post.title }}...</h1>
+              <!-- AUTHOR INFO -->
+              <div class="author-meta mb-4">
+                <img
+                  src="{% if single_post.author.profile.profile_image %}{{ single_post.author.profile.profile_image.url }}{% else %}/static/img/profile.webp{% endif %}"
+                  alt="author"
+                  width="55"
+                  height="55"
+                  class="rounded-circle profile-img"
+                />
+
+                <div>
+                  <div class="fw-bold">
+                    {{single_post.author.get_full_name}}
+                  </div>
+                  <small class="text-muted"
+                    >Posted {{ single_post.created_at|timesince }} ago</small
+                  >
+                </div>
+              </div>
+
+              <!-- BLOG CONTENT -->
+              <div class="content">{{ single_post.blog_body | safe }}</div>
+
+
+              <!-- COMMENTS -->
+              <div class="mt-5">
+                <h4 class="fw-bold mb-3">Comments ({{comments_count}})</h4>
+                {% if not user.is_authenticated %}
+                <form method="POST">
+                  {% csrf_token %}
+                  <textarea name="comment" rows="3" class="form-control" placeholder="Write a comment..."></textarea>
+                  <a href="{% url 'login' %}" class="btn btn-primary mt-2">Post Comment</a>
+                </form>
+                {% else %}
+                <form method="POST">
+                  {% csrf_token %}
+                  <textarea name="comment" rows="3" class="form-control" placeholder="Write a comment..."></textarea>
+                  <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                </form>
+                {% endif %}
+              </div>
+
+              {% if comments %} 
+              {% for i in comments %}
+              <div
+                class="comment-card d-flex gap-3 align-items-start p-3 mb-3 rounded-4 mt-3"
+              >
+                <!-- Comment Body -->
+                <div class="flex-grow-1">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <h6 class="fw-bold mb-0 text-primary">
+                      <span class="text-danger">Commented by:- </span>{{ i.user.get_full_name }}
+                      : <span class="text-dark">🚀{{ i.comment }}</span>
+                    </h6>
+                    <small class="text-muted"
+                      ><i class="fa-regular fa-clock"></i> {{ i.created_at|timesince }} ago ⏳</small>
+                  </div>
+                  <div class="d-flex gap-3">
+                    <span class="badge bg-gradient-green"
+                      >📖 Blog: {{ i.blog.title }}</span
+                    >
+                    <!-- <button class="btn btn-sm btn-outline-primary rounded-pill">
+                      <i class="fa-solid fa-reply"></i> Reply
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+              {% endfor %} {% else %}
+              <h4 class="mt-4">💬 No Comments Yet</h4>
+              {% endif %}
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock %}

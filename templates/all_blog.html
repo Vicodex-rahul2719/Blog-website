@@ -1,0 +1,139 @@
+{% extends 'base/base.html' %}
+{% block title %}All Blogs{% endblock %}
+{% block content %}
+<div class="container my-5 mt-2">
+
+  <!-- Header -->
+  <div class="header-bar mb-3">
+    <h2 class="text-center mb-0 text-white">🌐 VISIT ALL BLOGS</h2>
+  </div>
+
+  <div class="row g-3">
+    {% for i in blog %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow border-0 rounded-4">
+
+        <!-- Blog Image -->
+        <img src="/media/{{i.blog_image}}" class="card-img-top" alt="Post Image">
+
+        <div class="card-body d-flex flex-column">
+          <!-- Title -->
+          <h5 class="card-title fw-bold">
+            <a href="{% url 'blogs' i.slug %}" class="text-dark text-decoration-none">
+              {{i.title}}
+            </a>
+          </h5>
+
+          <!-- Short Description -->
+          <p class="card-text text-muted">
+            {{ i.short_description | truncatewords:20 }}
+          </p>
+
+          <!-- Author Profile -->
+          <div class="d-flex align-items-center gap-3">
+            <img src="{% if i.author.profile.profile_image %}{{ i.author.profile.profile_image.url }}{% else %}/static/images/default-avatar.png{% endif %}" 
+                 alt="author" width="55" height="55" class="rounded-circle profile-img shadow-sm">
+            <div>
+              <div class="fw-bold">👤 {{i.author.get_full_name}}</div>
+              <small class="text-muted">📅 {{ i.created_at | timesince }} ago</small>
+            </div>
+          </div>
+
+          <!-- Meta Info -->
+          <div class="mt-3">
+            <a href="{% url 'blogs' i.slug %}" class="badge badge-category text-decoration-none">#Blogger</a>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="d-flex gap-2 align-items-center">
+              {% if user.is_authenticated %}
+              <form method="post" action="{% url 'like_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.liked_users.all %}btn-success{% else %}btn-outline-success{% endif %}">
+                  👍 {{ i.liked_users.count }}
+                </button>
+              </form>
+              <form method="post" action="{% url 'dislike_blog' i.id %}" style="display:inline;">{% csrf_token %}
+                <button type="submit" 
+                        class="btn btn-sm {% if user in i.disliked_users.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                  👎 {{ i.disliked_users.count }}
+                </button>
+              </form>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-sm btn-outline-secondary">👍👎</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" style="text-decoration: none; font-size: 0.9rem; color: #555;">
+                💬 {{ i.comment_count }}
+              </a>
+            </div>
+            <div>
+              {% if user.is_authenticated and i.author == user %}
+              <a href="{% url 'update_blog' i.id %}" class="btn btn-edit btn-sm">✏️ Edit</a>
+              {% endif %}
+              <a href="{% url 'blogs' i.slug %}" class="btn btn-primary btn-sm">👁️</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  body {
+    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+  }
+  .header-bar {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    border-radius: 15px;
+    padding: 8px 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .card {
+    border: none;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  }
+  .card-img-top {
+    border-radius: 20px 20px 0 0;
+    height: 200px;
+    object-fit: cover;
+  }
+  .btn-edit {
+    background: linear-gradient(45deg, #1d976c, #93f9b9);
+    color: white;
+    font-weight: 600;
+  }
+  .btn-delete {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+    font-weight: 600;
+  }
+  .btn-edit:hover, .btn-delete:hover {
+    opacity: 0.9;
+  }
+  .badge-category {
+    background: linear-gradient(45deg, #0072ff, #00c6ff);
+    font-size: 0.75rem;
+    color: white !important;
+    border-radius: 15px;
+    padding: 5px 10px;
+  }
+  h5:hover {
+    text-decoration: underline;
+    color: #0072ff;
+  }
+  .profile-img {
+    object-fit: cover;
+    width: 55px;
+    height: 55px;
+  }
+</style>
+{% endblock %}

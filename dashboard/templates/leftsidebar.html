@@ -1,0 +1,28 @@
+ <div class="col-lg-3">
+    <div class="sidebar ">
+        <div class="container heading-middle rounded d-flex justify-content-center align-items-center mb-2 bg-gradient-green" >
+        <h3 class="text-center text-dark"><b>Dashboard</b></h3>
+    </div class="sidebar">
+        <a href="{% url 'dashboard' %}" class="menu-card fw-bold  {% if request.resolver_match.url_name == 'dashboard' %} bg-warning {% endif %}"><i class="fas fa-user"></i>PROFILE</a>
+        <a href="{% url 'add_blog' %}" class="menu-card fw-bold {% if '/add_blog/' in request.path %} bg-warning {% endif %}"><i class="fas fa-edit"></i> PUBLISH BLOG</a>
+        <a href="{% url 'my_posts' %}" class="menu-card fw-bold {% if '/my_posts/' in request.path %} bg-warning {% endif %}"><i class="fas fa-file-alt"></i> MY POSTS</a>
+        <a href="{% url 'comments' %}" class="menu-card fw-bold {% if '/comments/' in request.path %} bg-warning {% endif %}"><i class="fas fa-comments"></i> COMMENTS</a>
+        <a href="{% url 'likes' %}" class="menu-card fw-bold {% if '/likes/' in request.path %} bg-warning {% endif %}"><i class="fa-solid fa-heart"></i>LIKES </a>
+        <!-- <a href="#" class="menu-card fw-bold "><i class="fas fa-cog"></i> SEETINGS</a> -->
+         {% if perms.auth.view_user %}
+        <a href="{% url 'add_catagories' %}" class="menu-card fw-bold {% if '/add_catagories/' in request.path %} bg-warning {% endif %}"><i class="fas fa-list"></i> ADD CATEGORY</a>
+        {% endif %}
+        {% if perms.auth.view_user %}
+        <a href="{% url 'users' %}" class="menu-card fw-bold {% if '/users/' in request.path %} bg-warning {% endif %}"><i class="fa-solid fa-users"></i> REGULAR USERS </a>
+        {% endif %}
+        {% if perms.auth.view_user %}
+        <a href="{% url 'feedbacks' %}" class="menu-card fw-bold {% if '/feedbacks/' in request.path %} bg-warning {% endif %}"><i class="fa-solid fa-comment-dots"></i>FEEDBACKS </a>
+        {% endif %}
+        {% if perms.auth.view_user %}
+       <a href="{% url 'admin:index' %}" 
+        class="menu-card fw-bold {% if '/admin/' in request.path %} bg-warning {% endif %}">
+        <i class="fa-solid fa-user-tie"></i> ADMIN
+       </a>
+{% endif %}
+    </div>
+</div>

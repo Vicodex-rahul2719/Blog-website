@@ -1,0 +1,69 @@
+<!-- Footer -->
+<footer class="text-center text-lg-start text-white" 
+        style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); position: relative;">
+
+  <!-- Overlay for better text readability -->
+  <div style="background-color: rgba(0,0,0,0.7); padding-top: 40px; padding-bottom: 20px;">
+
+    <div class="container text-center text-md-start">
+      <div class="row mt-3">
+
+        <!-- About Section -->
+        <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">
+            <i class="fas fa-feather-alt me-2"></i> Daily Insight
+          </h6>
+          <p>
+            Your daily destination for inspiring blogs, creative ideas, and thought-provoking stories. 
+            We connect writers with readers across the globe.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+          <p><a href="/home/" class="text-reset" style="text-decoration:none">Home</a></p>
+          <p><a href="{% url 'about' %}" class="text-reset" style="text-decoration:none">About</a></p>
+          <p><a href="{% url 'all_blog' %}" class="text-reset" style="text-decoration:none">Blog</a></p>
+          <p><a href="{% url 'all_category' %}" class="text-reset" style="text-decoration:none">Categories</a></p>
+          <p><a href="{% url 'contact' %}" class="text-reset" style="text-decoration:none">Contact</a></p>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Stay Updated</h6>
+          <p>Subscribe to get the latest blog updates directly in your inbox.</p>
+          {% if not user.is_authenticated %}
+          <form method="post" action="" class="d-flex">
+    {% csrf_token %}
+    <input type="email" name="email" class="form-control me-2 rounded-pill" placeholder="Enter your email" required>
+    <a class="btn btn-warning rounded-pill" href="{% url 'login' %}">Subscribe</a>
+</form>
+{% else %}
+<form method="post" action="{% url 'subscribe' %}" class="d-flex">
+    {% csrf_token %}
+    <input type="email" name="email" class="form-control me-2 rounded-pill" placeholder="Enter your email" required>
+    <button class="btn btn-warning rounded-pill" type="submit">Subscribe</button>
+    {% endif %}
+</form>
+        </div>
+
+        <!-- Follow Us -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Follow Us</h6>
+          <a href="https://facebook.com" class="btn btn-outline-light btn-floating m-1 rounded-circle"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com" class="btn btn-outline-light btn-floating m-1 rounded-circle"><i class="fab fa-instagram"></i></a>
+          <a href="https://twitter.com" class="btn btn-outline-light btn-floating m-1 rounded-circle"><i class="fab fa-twitter"></i></a>
+          <a href="https://linkedin.com" class="btn btn-outline-light btn-floating m-1 rounded-circle"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center p-3 border-top mt-4" style="background-color: rgba(255,255,255,0.05);">
+      © {{ now|date:"Y" }} <b>Daily Insight</b> | All Rights Reserved | <a href="{% url 'policy' %}" style="text-decoration: none;">Policy</a>
+    </div>
+  </div>
+</footer>
+<!-- Footer -->
