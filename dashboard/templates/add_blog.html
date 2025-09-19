@@ -151,8 +151,8 @@
           <form id="blogForm" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.media }}
-             <!-- {{ form.as_p }} -->
-             {{ form | crispy }}
+             {{ form.as_p }}
+             <!-- {{ form | crispy }} -->
             <div class="d-flex justify-content-end mt-4 gap-2">
               <button type="button" class="btn btn-secondary" id="resetBtn">
                 <i class="fas fa-undo"></i> Reset
