@@ -148,7 +148,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # MEDIA INCLUDE FOR IMAGE UPLOAD
 MEDIA_URL='/media/'
